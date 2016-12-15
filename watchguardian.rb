@@ -21,7 +21,15 @@ def parse(fwpol)
     rules[:outif]    = pol.xpath('out-if').text
     rules[:enable]   = pol.xpath('enable').text
     rules[:log]      = pol.xpath('log').text
-    rules[:desc]      = pol.xpath('description').text
+    rules[:desc]     = pol.xpath('description').text
+
+      if rules[:firewall] == '2'
+        rules[:action] = 'DROP'
+      elsif rules[:firewall] == '4'
+        rules[:action] = 'PROXY?' #Not convinced 100% that 4 == proxy. This will have to do for now
+      else
+        rules[:action] = 'ALLOW'
+      end
     
     @rule_array << rules.dup
 
@@ -37,9 +45,9 @@ end
 
 def generate
   @rulestring = CSV.generate do |csv|
-    csv << ['Name', 'src', 'dest', 'Service', 'In Interface', 'Out Interface', 'Enabled', 'Log', 'Firewall', 'Property', 'Description']
+    csv << ['Name', 'src', 'dest', 'Service', 'In Interface', 'Out Interface', 'Action', 'Enabled', 'Log', 'Firewall', 'Property', 'Description']
     puts @rulestring
-      @rule_array.each { |row| csv << [row[:name], row[:src], row[:dest], row[:service], row[:inif], row[:outif], row[:enable], row[:log], row[:firewall], row[:property], row[:desc]] }
+      @rule_array.each { |row| csv << [row[:name], row[:src], row[:dest], row[:service], row[:inif], row[:outif], row[:action], row[:enable], row[:log], row[:firewall], row[:property], row[:desc]] }
   end
 end
 
