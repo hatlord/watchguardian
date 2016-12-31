@@ -11,17 +11,17 @@ fwpol = Nokogiri::XML(File.read(ARGV[0]))
 def parse(fwpol)
   fwpol.xpath('./profile/policy-list/policy').each do |pol|
     rules = {}
-    rules[:name]     = pol.xpath('name').text
-    rules[:property] = pol.xpath('property').text
-    rules[:service]  = pol.xpath('service').text
-    rules[:firewall] = pol.xpath('firewall').text
-    rules[:src]      = pol.xpath('source').text
-    rules[:dest]     = pol.xpath('destination ').text
-    rules[:inif]     = pol.xpath('in-if').text
-    rules[:outif]    = pol.xpath('out-if').text
-    rules[:enable]   = pol.xpath('enable').text
-    rules[:log]      = pol.xpath('log').text
-    rules[:desc]     = pol.xpath('description').text
+    rules[:name]     = pol.xpath('name').map(&:text).join("\r")
+    rules[:property] = pol.xpath('property').map(&:text).join("\r")
+    rules[:service]  = pol.xpath('service').map(&:text).join("\r")
+    rules[:firewall] = pol.xpath('firewall').map(&:text).join("\r")
+    rules[:src]      = pol.xpath('source').map(&:text).join("\r")
+    rules[:dest]     = pol.xpath('destination ').map(&:text).join("\r")
+    rules[:inif]     = pol.xpath('in-if').map(&:text).join("\r")
+    rules[:outif]    = pol.xpath('out-if').map(&:text).join("\r")
+    rules[:enable]   = pol.xpath('enable').map(&:text).join("\r")
+    rules[:log]      = pol.xpath('log').map(&:text).join("\r")
+    rules[:desc]     = pol.xpath('description').map(&:text).join("\r")
 
       if rules[:firewall] == '2'
         rules[:action] = 'DROP'
