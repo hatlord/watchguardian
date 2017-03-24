@@ -21,7 +21,9 @@ def parse_services(fwpol)
           elsif services[:proto] == '17'
             services[:proto] = "UDP"
           end
-        services[:port]  = member.xpath('server-port').map(&:text).join("\r")
+        services[:port]       = member.xpath('server-port').map(&:text).join("\r")
+        services[:start_port] = member.xpath('start-server-port').map(&:text).join("\r")
+        services[:end_port]   = member.xpath('end-server-port').map(&:text).join("\r")
 
     @rule_array << services.dup
     end
